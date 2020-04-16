@@ -1,0 +1,4 @@
+flask
+slackeventsapi
+gunicorn
+python-dotenv
