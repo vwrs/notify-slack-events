@@ -13,11 +13,6 @@ SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
 slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, endpoint="/slack/events")
 
 
-def create_app():
-    app = Flask(__name__)
-    return app
-
-
 def post_by_webhook(text, username='events-app'):
     response = requests.post(
         WEBHOOK_URL,
