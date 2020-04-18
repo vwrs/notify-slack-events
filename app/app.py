@@ -6,7 +6,7 @@ from slackeventsapi import SlackEventAdapter
 from flask import Flask, jsonify
 
 
-load_dotenv(verbose=True)
+load_dotenv(verbose=True)  # for local development
 
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL', '')
 SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
@@ -24,7 +24,6 @@ def post_by_webhook(text, username='events-app'):
         data=json.dumps({
             'text': text,
             'username': username,
-            # 'icon_emoji': ':slack:'
             'link_names': 1
         }),
         headers={'Content-Type': 'application/json'}
@@ -51,10 +50,9 @@ def reaction_added(event_data):
     event = event_data['event']
     emoji = event['reaction']
     user = event['user']
-    # item_user = event['item_user'] or 'someone'
     text = f'@{user} added a reaction :{emoji}:.'
     print(text)
-    post_by_webhook(text)
+    # post_by_webhook(text)
 
 
 @app.route('/')
