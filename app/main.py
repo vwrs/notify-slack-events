@@ -10,6 +10,7 @@ load_dotenv(verbose=True)
 
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL', '')
 SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
+PORT = int(os.environ.get('PORT', '3000'))
 
 app = Flask(__name__)
 slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET,
@@ -62,4 +63,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=False)
+    app.run(host='0.0.0.0', port=PORT, debug=False)
