@@ -3,14 +3,18 @@ import json
 import requests
 from dotenv import load_dotenv
 from slackeventsapi import SlackEventAdapter
-from flask import Flask
+from flask import Flask, jsonify
 
 
 load_dotenv(verbose=True)
 
 WEBHOOK_URL = os.environ.get('WEBHOOK_URL', '')
 SLACK_SIGNING_SECRET = os.environ.get('SLACK_SIGNING_SECRET', '')
-slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, endpoint="/slack/events")
+
+app = Flask(__name__)
+slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET,
+                                         '/slack/events',
+                                         app)
 
 
 def post_by_webhook(text, username='events-app'):
@@ -52,6 +56,10 @@ def reaction_added(event_data):
     post_by_webhook(text)
 
 
+@app.route('/')
+def index():
+    return jsonify({'hello': 'world'})
+
+
 if __name__ == '__main__':
-    # Start the server on port 3000
-    slack_events_adapter.start(port=3000, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=False)
